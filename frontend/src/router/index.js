@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../pages/Home.vue'
 import Events from '../pages/Events.vue'
 import Members from '../pages/Members.vue'
@@ -15,5 +15,5 @@ const routes = [
     { path: '/apply', component: Apply },
 ]
 
-const router = createRouter({ history: createWebHistory(import.meta.env.BASE_URL), routes })
+const router = createRouter({ history: createWebHashHistory(), routes })
 export default router
