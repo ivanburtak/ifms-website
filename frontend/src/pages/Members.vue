@@ -24,20 +24,73 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { ref, onMounted } from 'vue'
+import axios from 'axios'
+
+const dummyMembers = [
+  {
+    id: 1,
+    name: 'Іван Петренко',
+    bio: 'Професор математики, спеціаліст у галузі алгебри та теорії чисел.',
+    photo_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ivan'
+  },
+  {
+    id: 2,
+    name: 'Марія Коваленко',
+    bio: 'Доцент, дослідниця в області диференціальних рівнянь.',
+    photo_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Maria'
+  },
+  {
+    id: 3,
+    name: 'Дмитро Сидоренко',
+    bio: 'Аспірант, займається геометричним аналізом.',
+    photo_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Dmytro'
+  },
+  {
+    id: 4,
+    name: 'Олена Шевченко',
+    bio: 'Викладачка, експертиза у області викладання математики.',
+    photo_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Olena'
+  },
+  {
+    id: 5,
+    name: 'Сергій Морозов',
+    bio: 'Молодий вчений, дослідження у галузі комбінаторики.',
+    photo_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sergiy'
+  },
+  {
+    id: 6,
+    name: 'Анна Гончаренко',
+    bio: 'Експертиза у числовому аналізі та обчислювальній математиці.',
+    photo_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Anna'
+  }
+]
+
 export default {
   setup(){
     const members = ref([])
-    const loading = ref(true)
-    onMounted(async ()=>{
+    const loading = ref(false)
+    const useDummyData = import.meta.env.VITE_USE_DUMMY_DATA === 'true'
+
+    onMounted(async () => {
+      if (useDummyData) {
+        members.value = dummyMembers
+        return
+      }
+
+      loading.value = true
       try {
-        const res = await axios.get('http://localhost:8000/api/members/')
-        members.value = res.data
+        const api = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+        const response = await axios.get(`${api}/api/members/`)
+        members.value = response.data
+      } catch (error) {
+        console.error('Failed to load members:', error)
+        members.value = dummyMembers
       } finally {
         loading.value = false
       }
     })
+
     return { members, loading }
   }
 }

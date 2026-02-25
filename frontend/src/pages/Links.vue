@@ -34,22 +34,87 @@
 </template>
 
 <script>
+import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
-import { ref, onMounted, computed } from 'vue'
+
+const dummyLinks = [
+  {
+    id: 1,
+    title: 'Український математичний журнал',
+    url: 'https://umj.imath.kiev.ua/',
+    category: 'society'
+  },
+  {
+    id: 2,
+    title: 'Львівське математичне товариство',
+    url: 'https://iamm.lviv.ua/',
+    category: 'society'
+  },
+  {
+    id: 3,
+    title: 'НАН України - Інститут прикладної математики',
+    url: 'https://www.iamm.ivano-frankivsk.com/',
+    category: 'society'
+  },
+  {
+    id: 4,
+    title: 'OEIS - Енциклопедія послідовностей цілих чисел',
+    url: 'https://oeis.org/',
+    category: 'interesting'
+  },
+  {
+    id: 5,
+    title: 'Project Euler - Математичні задачі',
+    url: 'https://projecteuler.net/',
+    category: 'interesting'
+  },
+  {
+    id: 6,
+    title: 'Art of Problem Solving',
+    url: 'https://artofproblemsolving.com/',
+    category: 'interesting'
+  },
+  {
+    id: 7,
+    title: 'Khan Academy - Математика',
+    url: 'https://www.khanacademy.org/',
+    category: 'interesting'
+  },
+  {
+    id: 8,
+    title: 'Wolfram MathWorld',
+    url: 'https://mathworld.wolfram.com/',
+    category: 'interesting'
+  }
+]
+
 export default {
   setup(){
     const links = ref([])
-    const loading = ref(true)
-    onMounted(async ()=>{
+    const loading = ref(false)
+    const useDummyData = import.meta.env.VITE_USE_DUMMY_DATA === 'true'
+    const societies = computed(()=> links.value.filter(l=>l.category==='society'))
+    const interesting = computed(()=> links.value.filter(l=>l.category==='interesting'))
+
+    onMounted(async () => {
+      if (useDummyData) {
+        links.value = dummyLinks
+        return
+      }
+
+      loading.value = true
       try {
-        const res = await axios.get('http://localhost:8000/api/links/')
-        links.value = res.data
+        const api = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+        const response = await axios.get(`${api}/api/links/`)
+        links.value = response.data
+      } catch (error) {
+        console.error('Failed to load links:', error)
+        links.value = dummyLinks
       } finally {
         loading.value = false
       }
     })
-    const societies = computed(()=> links.value.filter(l=>l.category==='society'))
-    const interesting = computed(()=> links.value.filter(l=>l.category==='interesting'))
+
     return { links, societies, interesting, loading }
   }
 }

@@ -34,26 +34,65 @@
 </template>
 
 <script>
+import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
-import { ref, onMounted, computed } from 'vue'
+
+const dummyEvents = [
+  {
+    id: 1,
+    title: 'Міжнародна конференція з чистої математики',
+    type: 'conference',
+    date: '2026-04-15T10:00:00',
+    description: 'Конференція присвячена найновішим тенденціям у чистій математиці. Учасники поділяться своїми дослідженнями та знаходитимуть нові напрямки для розвитку науки.'
+  },
+  {
+    id: 2,
+    title: 'Семінар: Топологія та її застосування',
+    type: 'seminar',
+    date: '2026-03-20T14:30:00',
+    description: 'Обговорення сучасних методів топологічного аналізу та їхніх практичних застосувань у фізиці та комп\'ютерних науках.'
+  },
+  {
+    id: 3,
+    title: 'Воркшоп: Численні методи',
+    type: 'workshop',
+    date: '2026-03-10T09:00:00',
+    description: 'Практичний семінар з розробки та реалізації чисельних методів розв\'язання складних математичних задач.'
+  },
+  {
+    id: 4,
+    title: 'Вебінар: Штучний інтелект та математика',
+    type: 'webinar',
+    date: '2026-02-28T18:00:00',
+    description: 'Онлайн зустріч, присвячена взаємозв\'язку між математичними основами та розвитком штучного інтелекту.'
+  },
+  {
+    id: 5,
+    title: 'Конференція студентів-математиків',
+    type: 'conference',
+    date: '2026-05-05T11:00:00',
+    description: 'Платформа для молодих математиків представити свої дослідження та отримати зворотний зв\'язок від професіоналів.'
+  },
+  {
+    id: 6,
+    title: 'Семінар: Аналіз великих даних',
+    type: 'seminar',
+    date: '2026-04-01T16:00:00',
+    description: 'Огляд математичних підходів до обробки та аналізу великих обсягів даних.'
+  }
+]
+
 export default {
   setup(){
     const events = ref([])
     const kind = ref('all')
-    const loading = ref(true)
+    const loading = ref(false)
+    const useDummyData = import.meta.env.VITE_USE_DUMMY_DATA === 'true'
     const btn = 'px-4 py-2 bg-white rounded-lg text-slate-700 border border-slate-300 hover:border-slate-400 transition font-medium'
     const activeBtn = 'px-4 py-2 bg-sky-600 text-white rounded-lg transition font-medium'
-    onMounted(async ()=>{
-      try {
-        const res = await axios.get('http://localhost:8000/api/events/')
-        events.value = res.data
-      } finally {
-        loading.value = false
-      }
-    })
-    const filter = (k)=> kind.value = k
-    const filtered = computed(()=>{
-      if(kind.value==='all') return events.value
+    const filter = (k) => kind.value = k
+    const filtered = computed(() => {
+      if (kind.value === 'all') return events.value
       return events.value.filter(e=>e.type===kind.value)
     })
     const formatDate = (d)=> d ? new Date(d).toLocaleString('uk-UA') : '—'
@@ -66,6 +105,26 @@ export default {
       }
       return labels[type] || type
     }
+
+    onMounted(async () => {
+      if (useDummyData) {
+        events.value = dummyEvents
+        return
+      }
+
+      loading.value = true
+      try {
+        const api = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+        const response = await axios.get(`${api}/api/events/`)
+        events.value = response.data
+      } catch (error) {
+        console.error('Failed to load events:', error)
+        events.value = dummyEvents
+      } finally {
+        loading.value = false
+      }
+    })
+
     return { events, kind, filter, filtered, formatDate, btn, activeBtn, loading, getCategoryLabel }
   }
 }
