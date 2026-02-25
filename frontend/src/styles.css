@@ -1,0 +1,154 @@
+:root {
+    --brand: #0ea5a4
+}
+
+body {
+    font-family: 'Inter', system-ui, Arial, Helvetica, sans-serif;
+    margin: 0;
+    background: #f8fafc;
+    color: #0f172a
+}
+
+.container-custom {
+    max-width: 64rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.5rem 1rem
+}
+
+.card-custom {
+    background: #fff;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06)
+}
+
+@import "tailwindcss";
+
+.muted {
+    color: #64748b;
+    font-size: .9rem
+}
+
+.brand-color {
+    color: var(--brand)
+}
+
+/* Simple responsive image */
+.img-responsive {
+    width: 100%;
+    height: auto;
+    display: block
+}
+
+/* Animations */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Smooth transitions */
+* {
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Typography improvements */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    letter-spacing: -0.5px;
+    font-weight: 700;
+}
+
+/* Button styling improvements */
+button,
+[role="button"],
+a.btn {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+}
+
+/* Input styling */
+input,
+textarea,
+select {
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+}
+
+/* Link styling */
+a {
+    color: #0ea5a4;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Hero section styling */
+.hero-gradient {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+/* Card hover effects */
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(2, 6, 23, 0.1);
+}
+
+/* Responsive design improvements */
+@media (max-width: 640px) {
+    .container-custom {
+        padding: 1rem 0.75rem;
+    }
+
+    .hide-mobile {
+        display: none;
+    }
+}
+
+@media (min-width: 641px) {
+    .hide-desktop {
+        display: none;
+    }
+}
