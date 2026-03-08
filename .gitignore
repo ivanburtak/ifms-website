@@ -215,5 +215,6 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
+.env.prod
 # Frontend
 node_modules

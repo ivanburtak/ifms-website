@@ -11,7 +11,7 @@ services:
     volumes:
       - ./backend:/app
     env_file:
-      - .env.dev
+      - .env.prod
     depends_on:
       db:
         condition: service_healthy
@@ -23,7 +23,7 @@ services:
     volumes:
       - postgres_db:/var/lib/postgresql/
     env_file:
-      - .env.dev
+      - .env.prod
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 10s
@@ -34,24 +34,12 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile.dev
       args:
         VITE_API_URL: ${VITE_API_URL}
     env_file:
-      - .env.dev
+      - .env.prod
     container_name: vue_app
     ports:
-      - 5173:5173
+      - 8080:8080
     volumes:
       - ./frontend:/app
-    develop:
-      watch:
-        - path: ./frontend/src
-          target: /app/src
-          action: sync
-        - path: ./frontend/package.json
-          target: /app/package.json
-          action: restart
-        - path: ./frontend/vite.config.js
-          target: /app/vite.config.js
-          action: restart

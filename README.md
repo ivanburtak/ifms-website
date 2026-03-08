@@ -1,10 +1,9 @@
-Initial build:
+Development:
 ```bash
-chmod +x backend/entrypoint.dev.sh
 docker compose up --build -d
 ```
 
-Consequetive:
+Production: (needs .env.prod)
 ```bash
-docker compose up
+docker compose -f docker-compose.prod.yml up -d --build
 ```
