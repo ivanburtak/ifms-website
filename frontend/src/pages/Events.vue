@@ -67,11 +67,6 @@ export default {
     }
 
     onMounted(async () => {
-      if (useDummyData) {
-        events.value = dummyEvents
-        return
-      }
-
       loading.value = true
       try {
         const api = import.meta.env.VITE_API_URL

@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from core.models import Event, Member, Link
-from datetime import datetime, timedelta
+from datetime import timedelta
+from django.utils import timezone
 
 
 class Command(BaseCommand):
@@ -17,25 +18,25 @@ class Command(BaseCommand):
             Event.objects.create(
                 title="Python Conference 2026",
                 description="The largest Python conference in Eastern Europe",
-                date=datetime.now() + timedelta(days=30),
+                date=timezone.now() + timedelta(days=30),
                 type="conference",
             ),
             Event.objects.create(
                 title="Web Development Workshop",
                 description="Learn modern web development with Vue.js and Django",
-                date=datetime.now() + timedelta(days=15),
+                date=timezone.now() + timedelta(days=15),
                 type="workshop",
             ),
             Event.objects.create(
                 title="AI and Machine Learning Seminar",
                 description="Explore the latest trends in AI and ML",
-                date=datetime.now() + timedelta(days=45),
+                date=timezone.now() + timedelta(days=45),
                 type="seminar",
             ),
             Event.objects.create(
                 title="JavaScript Webinar",
                 description="Advanced JavaScript concepts and best practices",
-                date=datetime.now() + timedelta(days=7),
+                date=timezone.now() + timedelta(days=7),
                 type="webinar",
             ),
         ]
