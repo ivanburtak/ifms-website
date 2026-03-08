@@ -1,6 +1,6 @@
 Initial build:
 ```bash
-chmod +x backend/entrypoint.sh
+chmod +x backend/entrypoint.dev.sh
 docker compose up --build -d
 ```
 

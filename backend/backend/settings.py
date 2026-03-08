@@ -3,7 +3,7 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
-DEBUG = os.environ["DJANGO_DEBUG"]
+DEBUG = int(os.environ["DJANGO_DEBUG"])
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [

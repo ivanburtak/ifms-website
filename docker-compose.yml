@@ -4,7 +4,9 @@ volumes:
 
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
     container_name: django_app
     ports:
       - 8000:8000
@@ -36,7 +38,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       args:
         VITE_API_URL: ${VITE_API_URL}
     container_name: vue_app
