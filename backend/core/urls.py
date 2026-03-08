@@ -6,6 +6,8 @@ from .views import (
     LinkViewSet,
     ApplicationViewSet,
     ContactViewSet,
+    admin_login,
+    check_auth,
 )
 
 router = routers.DefaultRouter()
@@ -17,4 +19,6 @@ router.register("contacts", ContactViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("user/", check_auth),
+    path("admin-login/", admin_login),
 ]

@@ -5,6 +5,7 @@ import Members from '../pages/Members.vue'
 import Links from '../pages/Links.vue'
 import Contact from '../pages/Contact.vue'
 import Apply from '../pages/Apply.vue'
+import Admin from '../pages/Admin.vue'
 
 const routes = [
     { path: '/', component: Home },
@@ -13,7 +14,9 @@ const routes = [
     { path: '/links', component: Links },
     { path: '/contact', component: Contact },
     { path: '/apply', component: Apply },
+    { path: '/admin', component: Admin },
 ]
 
 const router = createRouter({ history: createWebHistory(), routes })
+
 export default router
