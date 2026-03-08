@@ -1,0 +1,46 @@
+volumes:
+  postgres_db:
+
+
+services:
+  backend:
+    build: ./backend
+    container_name: django_app
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+
+  db:
+    image: postgres:18
+    container_name: postgres_db
+    volumes:
+      - postgres_db:/var/lib/postgresql/
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+    container_name: vue_app
+    ports:
+      - 8080:8080
+    volumes:
+      - ./frontend:/app
