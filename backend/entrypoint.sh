@@ -15,5 +15,5 @@ echo "Starting server..."
 if [ "$DJANGO_DEBUG" = "1" ]; then
     python manage.py runserver 0.0.0.0:8000
 else
-    gunicorn myproject.wsgi:application --bind 0.0.0.0:8000 --workers 4
+    gunicorn backend.wsgi:application --bind 0.0.0.0:8000 --workers 4
 fi
