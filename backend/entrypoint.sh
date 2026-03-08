@@ -4,4 +4,4 @@ echo "Running migrations"
 python manage.py migrate
 
 echo "Starting server..."
-uvicorn backend.asgi:application --host 0.0.0.0 --port 8000 --workers 4
+gunicorn backend.wsgi:application --bind 0.0.0.0:8000 --workers 4
