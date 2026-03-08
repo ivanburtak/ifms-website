@@ -11,9 +11,12 @@
       </div>
     </div>
     <div v-else class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-      <div class="bg-white border border-slate-200 rounded-lg overflow-hidden hover:shadow-lg transition duration-200" v-for="m in members" :key="m.id">
+      <div class="bg-white border border-slate-200 rounded-lg overflow-hidden hover:shadow-lg transition duration-200"
+        v-for="m in members" :key="m.id">
         <img v-if="m.photo_url" :src="m.photo_url" alt="photo" class="w-full h-40 object-cover" />
-        <div v-else class="w-full h-40 bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center text-4xl text-slate-400">👤</div>
+        <div v-else
+          class="w-full h-40 bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center text-4xl text-slate-400">
+          👤</div>
         <div class="p-5">
           <h3 class="font-bold text-slate-900 text-lg">{{ m.name }}</h3>
           <p class="text-slate-600 text-sm mt-2 leading-relaxed">{{ m.bio || 'Активний член товариства' }}</p>
@@ -28,19 +31,18 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
 export default {
-  setup(){
+  setup() {
     const members = ref([])
     const loading = ref(false)
 
     onMounted(async () => {
       loading.value = true
       try {
-        const api = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+        const api = import.meta.env.VITE_API_URL
         const response = await axios.get(`${api}/api/members/`)
         members.value = response.data
       } catch (error) {
         console.error('Failed to load members:', error)
-        members.value = dummyMembers
       } finally {
         loading.value = false
       }

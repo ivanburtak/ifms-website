@@ -1,7 +1,8 @@
 <template>
   <section class="container-custom py-8">
     <!-- Toast Notification -->
-    <div v-if="sent" class="fixed bottom-4 right-4 bg-green-50 border border-green-200 rounded-lg p-4 flex gap-3 shadow-lg max-w-sm z-50 animate-in">
+    <div v-if="sent"
+      class="fixed bottom-4 right-4 bg-green-50 border border-green-200 rounded-lg p-4 flex gap-3 shadow-lg max-w-sm z-50 animate-in">
       <span class="text-2xl flex-shrink-0">✓</span>
       <div>
         <h3 class="font-semibold text-green-900">Повідомлення відправлене!</h3>
@@ -19,20 +20,24 @@
         <form @submit.prevent="send" class="space-y-4">
           <div>
             <label class="block text-sm font-semibold text-slate-900 mb-1">Ім'я</label>
-            <input v-model="form.name" placeholder="Ваше ім'я" required class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent" />
+            <input v-model="form.name" placeholder="Ваше ім'я" required
+              class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent" />
           </div>
 
           <div>
             <label class="block text-sm font-semibold text-slate-900 mb-1">Email</label>
-            <input v-model="form.email" placeholder="your@email.com" type="email" required class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent" />
+            <input v-model="form.email" placeholder="your@email.com" type="email" required
+              class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent" />
           </div>
 
           <div>
             <label class="block text-sm font-semibold text-slate-900 mb-1">Повідомлення</label>
-            <textarea v-model="form.message" placeholder="Напишіть своє повідомлення..." required class="w-full border border-slate-300 rounded-lg px-4 py-2 h-32 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent resize-none"></textarea>
+            <textarea v-model="form.message" placeholder="Напишіть своє повідомлення..." required
+              class="w-full border border-slate-300 rounded-lg px-4 py-2 h-32 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent resize-none"></textarea>
           </div>
 
-          <button type="submit" class="w-full px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-semibold transition duration-200 flex items-center justify-center gap-2">
+          <button type="submit"
+            class="w-full px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-semibold transition duration-200 flex items-center justify-center gap-2">
             <span>Відправити</span>
             <span v-if="loading" class="inline-block animate-spin">↻</span>
           </button>
@@ -68,14 +73,15 @@
 import axios from 'axios'
 import { reactive, ref } from 'vue'
 export default {
-  setup(){
-    const form = reactive({ name:'', email:'', message:'' })
+  setup() {
+    const form = reactive({ name: '', email: '', message: '' })
     const sent = ref(false)
     const loading = ref(false)
-    const send = async ()=>{
+    const send = async () => {
       try {
         loading.value = true
-        await axios.post('http://localhost:8000/api/contacts/', form)
+        const api = import.meta.env.VITE_API_URL
+        await axios.post(`${api}/api/contacts/`, form)
         form.name = ''
         form.email = ''
         form.message = ''
