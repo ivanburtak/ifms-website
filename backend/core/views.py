@@ -21,11 +21,6 @@ class EventViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     search_fields = ["title", "description"]
 
-    @action(detail=False)
-    def conferences(self, request):
-        qs = self.get_queryset().filter(type="conference")
-        return Response(EventSerializer(qs, many=True).data)
-
 
 class MemberViewSet(viewsets.ModelViewSet):
     queryset = Member.objects.all()
@@ -41,6 +36,13 @@ class ApplicationViewSet(viewsets.ModelViewSet):
     queryset = Application.objects.all()
     serializer_class = ApplicationSerializer
     permission_classes = [IsAdminUser]
+
+    def get_permissions(self):
+        if self.action in ["list", "update", "partial_update", "destroy"]:
+            permission_classes = [IsAdminUser]
+        else:
+            permission_classes = []
+        return [p() for p in permission_classes]
 
 
 class ContactViewSet(viewsets.ModelViewSet):
