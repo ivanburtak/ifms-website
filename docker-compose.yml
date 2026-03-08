@@ -11,7 +11,7 @@ services:
     volumes:
       - ./backend:/app
     env_file:
-      - .env.dev
+      - .env
     depends_on:
       db:
         condition: service_healthy
@@ -22,8 +22,6 @@ services:
     container_name: postgres_db
     volumes:
       - postgres_db:/var/lib/postgresql/
-    env_file:
-      - .env.dev
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 10s
@@ -34,11 +32,8 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile.dev
       args:
         VITE_API_URL: ${VITE_API_URL}
-    env_file:
-      - .env.dev
     container_name: vue_app
     ports:
       - 5173:5173
